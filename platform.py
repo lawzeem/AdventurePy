@@ -14,8 +14,6 @@ def set_window():
     pygame.display.set_caption(window_title)
     window = pygame.display.set_mode((window_height, window_width), pygame.HWSURFACE | pygame.DOUBLEBUF)
 
-
-
 def redrawGameWindow():
     pygame.display.update()
 
@@ -31,15 +29,7 @@ enemy_bat = [pygame.transform.scale(pygame.image.load('graphics\\enemy_bat\\tile
 bg = pygame.image.load('graphics\\pethero-bg1.gif')
 bg = pygame.transform.scale(bg, (600,400))
 
-# def enemy(e):
-
-
 x = 0
-
-# class Hero:
-#     def __init__(self):
-#         self.x = 20
-#         self.y = 150
 
 class player(object):
     def __init__(self, x, y, megaman, jmp):
@@ -51,7 +41,7 @@ class player(object):
 
     def run(self):
 
-        pygame.draw.rect(window, (255, 0 ,0), self.hitbox, 2)
+        # pygame.draw.rect(window, (255, 0 ,0), self.hitbox, 2)
         if (self.megaman == 1):
             # window.blit(bg, (rel_x - bg.get_rect().width, 0))
             window.blit(run[0], (20, 150))
@@ -65,7 +55,7 @@ class player(object):
             window.blit(run[2], (20, 150))
 
     def jump(self):
-        pygame.draw.rect(window, (255, 0 ,0), self.hitbox, 2)
+        # pygame.draw.rect(window, (255, 0 ,0), self.hitbox, 2)
 
         if (self.jmp == 0):
             self.hitbox = (self.x, self.y - 60, 100, 80)
@@ -89,11 +79,7 @@ class player(object):
         else:
             self.jmp += 1
         self.hitbox = (self.x, self.y, 100, 80)
-        pygame.draw.rect(window, (255, 0 ,0), self.hitbox, 2)
-
-
-
-
+        # pygame.draw.rect(window, (255, 0 ,0), self.hitbox, 2)
 
 class enemy(object):
     def __init__(self, x, y, anim):
@@ -102,9 +88,8 @@ class enemy(object):
         self.anim = anim
         self.hitbox = (self.x, self.y+30, 100, 100)
 
-
     def update(self):
-        pygame.draw.rect(window, (255, 0 ,0), self.hitbox, 2)
+        # pygame.draw.rect(window, (255, 0 ,0), self.hitbox, 2)
 
         if self.anim == 0:
             window.blit(enemy_bat[0], (self.x, self.y))
@@ -117,8 +102,28 @@ megaman = 1
 e = 0
 y = 250
 x_enemy=160
+score = 0
+black=(0,0,0)
+end_it=False
+while (end_it==False):
+    window.fill(Color.Beige)
+    myfont=pygame.font.SysFont("Britannic Bold", 40)
+    nlabel=myfont.render("Welcome, Mouse Click to begin", 1, (255, 0, 0))
+    for event in pygame.event.get():
+        if event.type==MOUSEBUTTONDOWN:
+            pygame.time.wait(500)
+            y = 1000
+            end_it=True
+        if event.type == QUIT:
+            pygame.quit()
+            sys.exit()
+
+    window.blit(nlabel,(70, 50))
+    pygame.display.flip()
 
 while isRunning:
+
+    # print(score)
     for event in pygame.event.get():
         if event.type == QUIT:
             isRunning = False
@@ -155,11 +160,20 @@ while isRunning:
         e += 1
     y -= 20
     if y<=0:
+
         y = random.randint(600, 1000)
-        x_enemy = random.randint(160, 250)
+        # x_enemy = random.randint(160, 250)
+        # a = enemy(y, x_enemy, e)
+    score += 1
+    font = pygame.font.Font("C:\\Windows\\Fonts\\Arial.ttf", 50)
+    text = font.render("Score: "+str(score), True, (Color.White))
+    # textpos = text.get_rect(centerx=window.get_width() / 2)
+    window.blit(text, (0, 0))
+
     pygame.display.update()
     if Hero.hitbox[0] >= a.hitbox[0] and Hero.hitbox[1]+Hero.hitbox[3] >= a.hitbox[1]+a.hitbox[3]:
         window.fill((255,0,0))
+        score = 0
         pygame.display.update()
 
     clock.tick(27)
