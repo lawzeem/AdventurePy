@@ -30,34 +30,93 @@ jump = [pygame.transform.scale(pygame.image.load('graphics\\megaman\\tile006.png
 enemy_bat = [pygame.transform.scale(pygame.image.load('graphics\\enemy_bat\\tile013.png'), (150, 150)), pygame.transform.scale(pygame.image.load('graphics\\enemy_bat\\tile014.png'), (150, 200)), pygame.transform.scale(pygame.image.load('graphics\\enemy_bat\\tile015.png'), (150, 150))]
 bg = pygame.image.load('graphics\\pethero-bg1.gif')
 bg = pygame.transform.scale(bg, (600,400))
-e = 0
-y = 250
+
 # def enemy(e):
 
-megaman = 1
+
 x = 0
 
-def Hero(megamane):
-    if (megamane == 1):
-        window.blit(bg, (x, 0))
+# class Hero:
+#     def __init__(self):
+#         self.x = 20
+#         self.y = 150
 
-        window.blit(run[0], (20, 150))
-        megamane+=1
+class player(object):
+    def __init__(self, x, y, megaman, jmp):
+        self.x = x
+        self.y = y
+        self.megaman = megaman
+        self.jmp = jmp
+        self.hitbox = (self.x, self.y+60, 100, 80)
 
-    if (megamane == 2):
-        window.blit(bg, (x, 0))
+    def run(self):
 
-        window.blit(run[1], (20, 150))
-        megamane += 1
+        pygame.draw.rect(window, (255, 0 ,0), self.hitbox, 2)
+        if (self.megaman == 1):
+            # window.blit(bg, (rel_x - bg.get_rect().width, 0))
+            window.blit(run[0], (20, 150))
 
-    if (megamane == 3):
-        window.blit(bg, (x, 0))
+        if (self.megaman == 2):
+            # window.blit(bg, (rel_x - bg.get_rect().width, 0))
+            window.blit(run[1], (20, 150))
 
-        window.blit(run[2], (20, 150))
-        megamane = 1
-    else:
-        megamane += 1
+        if (self.megaman == 3):
+            # window.blit(bg, (rel_x - bg.get_rect().width, 0))
+            window.blit(run[2], (20, 150))
 
+    def jump(self):
+        pygame.draw.rect(window, (255, 0 ,0), self.hitbox, 2)
+
+        if (self.jmp == 0):
+            self.hitbox = (self.x, self.y - 60, 100, 80)
+
+            # window.blit(bg, (0, 0))
+            self.jmp += 1
+            window.blit(jump[0], (20, 30))
+
+        if (self.jmp == 1):
+            self.hitbox = (self.x, self.y - 60, 100, 80)
+
+            # window.fill(Color.Azure)
+            window.blit(jump[1], (20, 30))
+
+        if (self.jmp == 2):
+            self.hitbox = (self.x, self.y - 60, 100, 80)
+
+            # window.fill(Color.Azure)
+            window.blit(jump[2], (20, 30))
+            self.jmp = 0
+        else:
+            self.jmp += 1
+        self.hitbox = (self.x, self.y, 100, 80)
+        pygame.draw.rect(window, (255, 0 ,0), self.hitbox, 2)
+
+
+
+
+
+class enemy(object):
+    def __init__(self, x, y, anim):
+        self.x = x
+        self.y = y
+        self.anim = anim
+        self.hitbox = (self.x, self.y+30, 100, 100)
+
+
+    def update(self):
+        pygame.draw.rect(window, (255, 0 ,0), self.hitbox, 2)
+
+        if self.anim == 0:
+            window.blit(enemy_bat[0], (self.x, self.y))
+        if self.anim == 1:
+            window.blit(enemy_bat[1], (self.x-20, self.y))
+        if self.anim == 2:
+            window.blit(enemy_bat[2], (self.x-20, self.y))
+
+megaman = 1
+e = 0
+y = 250
+x_enemy=160
 
 while isRunning:
     for event in pygame.event.get():
@@ -69,68 +128,41 @@ while isRunning:
     if rel_x < window_width + 200:
         window.blit(bg, (rel_x, 0))
     x-=10
-    # megaman = 1
-    # Hero(megaman)
-    if (megaman == 1):
-        window.blit(bg, (x, 0))
 
-        window.blit(run[0], (20, 150))
-
-    if (megaman == 2):
-        window.blit(bg, (x, 0))
-
-        window.blit(run[1], (20, 150))
-
-    if (megaman == 3):
-        window.blit(bg, (x, 0))
-
-        window.blit(run[2], (20, 150))
+    window.blit(bg, (x, 0))
+    jmp = 0
+    Hero = player(20, 150, megaman, jmp)
+    window.blit(bg, (x, 0))
+    Hero.run()
+    if megaman > 3:
         megaman = 1
     else:
         megaman += 1
-
 
     keys = pygame.key.get_pressed()
     if keys[pygame.K_SPACE]:
         window.blit(bg, (rel_x - bg.get_rect().width, 0))
         if rel_x < window_width + 200:
             window.blit(bg, (rel_x, 0))
+        Hero.jump()
 
-        jmp = 0
-        # x-=4
-        if (jmp == 0):
-            # window.blit(bg, (0, 0))
-            jmp += 1
-            window.blit(jump[0], (20, 30))
+    a = enemy(y, x_enemy, e)
+    a.update()
 
-
-        if (jmp == 1):
-            # window.fill(Color.Azure)
-            window.blit(jump[1], (20, 30))
-
-        if (jmp == 2):
-            # window.fill(Color.Azure)
-            window.blit(jump[2], (20, 30))
-            jmp = 0
-        else:
-            jmp += 1
-    # enemy(e)
-    if e == 0:
-        window.blit(enemy_bat[0], (y, 160))
-    if e == 1:
-        window.blit(enemy_bat[1], (y, 160))
-    if e == 2:
-        window.blit(enemy_bat[2], (y, 160))
+    if e > 2:
         e = 0
     else:
-        e+=1
-        y-=20
-
+        e += 1
+    y -= 20
+    if y<=0:
+        y = random.randint(600, 1000)
+        x_enemy = random.randint(160, 250)
     pygame.display.update()
+    if Hero.hitbox[0] >= a.hitbox[0] and Hero.hitbox[1]+Hero.hitbox[3] >= a.hitbox[1]+a.hitbox[3]:
+        window.fill((255,0,0))
+        pygame.display.update()
 
     clock.tick(27)
-    # redrawGameWindow()
 
 pygame.quit()
 sys.exit()
-
