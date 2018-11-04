@@ -19,7 +19,8 @@ walkLeft = [pygame.image.load('graphics\\tile009.png'), pygame.image.load('graph
 walkUp = [pygame.image.load('graphics\\tile000.png'), pygame.image.load('graphics\\tile001.png'), pygame.image.load('graphics\\tile002.png')]
 walkDown = [pygame.image.load('graphics\\tile006.png'), pygame.image.load('graphics\\tile007.png'), pygame.image.load('graphics\\tile008.png')]
 walkRight = [pygame.image.load('graphics\\tile003.png'), pygame.image.load('graphics\\tile004.png'), pygame.image.load('graphics\\tile005.png')]
-bg = pygame.image.load('graphics\\grass-tile.png')
+bg = pygame.image.load('graphics\\tiles.png')
+bg = pygame.transform.scale(bg, (800,448))
 char = pygame.image.load('graphics\\tile007.png')
 clock = pygame.time.Clock()
 
@@ -54,13 +55,6 @@ class player(object):
         else:
             window.blit(char, (self.x, self.y))
 
-# x_char = 0
-# y_char = 0
-# width_char = 16
-# height_char = 64
-# vel = 5
-# walkCount = 0
-
 tile_size = 32
 
 fps_font = pygame.font.Font("C:\\Windows\\Fonts\\Arial.ttf", 20)
@@ -73,8 +67,8 @@ def show_fps():
 # Window
 def set_window():
     global window, window_height, window_width, window_title
-    window_height = 500
-    window_width = 480
+    window_height = 800
+    window_width = 448
     window_title = "AdventurePy"
     pygame.display.set_caption(window_title)
     window = pygame.display.set_mode((window_height, window_width), pygame.HWSURFACE | pygame.DOUBLEBUF)
@@ -91,6 +85,7 @@ def fps():
 
 def redrawGameWindow():
     global walkCount
+    window.blit(bg,(0,0))
     # for x in range(0, 500, tile_size):
     #     for y in range(0, 480, tile_size):
     #         window.blit(bg, (x,y))
@@ -122,7 +117,7 @@ while isRunning:
         Hero.right = False
         Hero.up = False
         Hero.down = False
-    elif keys[pygame.K_RIGHT] and Hero.x < window_width - Hero.width - Hero.vel:
+    elif keys[pygame.K_RIGHT] and Hero.x  <  window_width-Hero.width-Hero.vel:
         Hero.x+=Hero.vel
         Hero.left = False
         Hero.right = True
