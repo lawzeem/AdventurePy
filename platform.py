@@ -158,7 +158,7 @@ while isRunning:
     if y<=0:
 
         y = random.randint(600, 1000)
-        # x_enemy = random.randint(160, 250)
+        x_enemy = random.randint( 110, 600)
         # a = enemy(y, x_enemy, e)
     score += 1
     font = pygame.font.Font("C:\\Windows\\Fonts\\Arial.ttf", 50)
@@ -167,12 +167,26 @@ while isRunning:
     window.blit(text, (0, 0))
 
     pygame.display.update()
-    if Hero.hitbox[0] >= a.hitbox[0] and Hero.hitbox[1]+Hero.hitbox[3] >= a.hitbox[1]+a.hitbox[3]:
-        window.fill((255,0,0))
+    if Hero.hitbox[0] >= a.hitbox[0] and Hero.hitbox[1] + Hero.hitbox[3] >= a.hitbox[1] + a.hitbox[3]:
+        window.fill((255, 0, 0))
         isRunning = False
         gameover = True
         # score = 0
         pygame.display.update()
+    # if (Hero.hitbox[0] >= a.hitbox[0] and (Hero.hitbox[3]-Hero.hitbox[1] <= a.hitbox[3]-a.hitbox[1]and not [pygame.K_SPACE])):
+    #     print("First")
+    #     window.fill((255,0,0))
+    #     isRunning = False
+    #     gameover = True
+    #     # score = 0
+    #     pygame.display.update()
+    # if (Hero.hitbox[0] >= a.hitbox[0] and (Hero.hitbox[3]-Hero.hitbox[1] >= a.hitbox[3]-a.hitbox[1] and keys[pygame.K_SPACE])):
+    #     print("Second")
+    #     window.fill((255,0,0))
+    #     isRunning = False
+    #     gameover = True
+    #     # score = 0
+    #     pygame.display.update()
 
     clock.tick(27)
 
